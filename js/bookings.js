@@ -1,4 +1,4 @@
-const BOOKING_URL = "http://192.168.161.129:8082/api/bookings";
+const BOOKING_URL = "/api/bookings";
 
 async function loadBookings() {
     const userId = localStorage.getItem("userId");

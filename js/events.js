@@ -1,5 +1,5 @@
-const EVENT_URL = "http://192.168.161.129:8081/api/events";
-const BOOKING_URL = "http://192.168.161.129:8082/api/bookings";
+const EVENT_URL = "/api/events";
+const BOOKING_URL = "/api/bookings";
 
 async function loadEvents() {
     const res = await fetch(EVENT_URL);

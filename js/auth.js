@@ -1,4 +1,4 @@
-const AUTH_URL = "http://192.168.161.129:8083/auth";
+const AUTH_URL = "/auth";
 
 async function register() {
     const email = document.getElementById("email").value;
