@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         IMAGE_NAME = "ticket-frontend"
+	ECR_REGISTRY = "861097501014.dkr.ecr.us-east-1.amazonaws.com"
+        ECR_REPO = "ticket-frontend"
     }
 
     stages {
@@ -17,6 +19,16 @@ pipeline {
                 sh "docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} -t ${IMAGE_NAME}:latest ."
             }
         }
+	
+	stage('Push to ECR'){
+	    steps {
+		sh "aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}"
+                sh "docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${ECR_REGISTRY}/${ECR_REPO}:${BUILD_NUMBER}"
+                sh "docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${ECR_REGISTRY}/${ECR_REPO}:latest"
+                sh "docker push ${ECR_REGISTRY}/${ECR_REPO}:${BUILD_NUMBER}"
+                sh "docker push ${ECR_REGISTRY}/${ECR_REPO}:latest"
+	    }
+	}
 
         stage('Deploy') {
             steps {
