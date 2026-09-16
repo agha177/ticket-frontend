@@ -32,14 +32,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh "docker stop frontend || true"
-                sh "docker rm frontend || true"
-                sh """
-                    docker run -d --name frontend \
-                    --network ticket-infra_default \
-                    -p 80:80 \
-                    ${IMAGE_NAME}:${BUILD_NUMBER}
-                """
+                  sh "kubectl set image deployment/frontend frontend=${ECR_REGISTRY}/${ECR_REPO}:${BUILD_NUMBER} --record"
+         	  sh "kubectl rollout status deployment/frontend --timeout=120s"
             }
         }
     }
